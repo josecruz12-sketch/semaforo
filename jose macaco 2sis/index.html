@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador de Semáforo</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #222;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      margin: 0;
+    }
+
+    .semaforo {
+      width: 100px;
+      background-color: #333;
+      padding: 20px;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+
+    .luz {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background-color: #555;
+      opacity: 0.3;
+      transition: opacity 0.3s;
+    }
+
+    .vermelho.ativo { background-color: #ff0000; opacity: 1; box-shadow: 0 0 20px #ff0000; }
+    .laranja.ativo { background-color: #ffaa00; opacity: 1; box-shadow: 0 0 20px #ffaa00; }
+    .verde.ativo { background-color: #00ff00; opacity: 1; box-shadow: 0 0 20px #00ff00; }
+
+    .status {
+      margin-top: 20px;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="semaforo">
+    <div class="luz vermelho" id="vermelho"></div>
+    <div class="luz laranja" id="laranja"></div>
+    <div class="luz verde" id="verde"></div>
+  </div>
+
+  <div class="status" id="status">Iniciando...</div>
+
+  <script>
+    const luzVermelho = document.getElementById('vermelho');
+    const luzLaranja = document.getElementById('laranja');
+    const luzVerde = document.getElementById('verde');
+    const statusTexto = document.getElementById('status');
+
+    function apagarTodas() {
+      luzVermelho.classList.remove('ativo');
+      luzLaranja.classList.remove('ativo');
+      luzVerde.classList.remove('ativo');
+    }
+
+    function iniciarSemaforo() {
+      // Estado 1: Verde (6 segundos)
+      apagarTodas();
+      luzVerde.classList.add('ativo');
+      statusTexto.textContent = 'Sinal Verde - 6s';
+
+      setTimeout(() => {
+        // Estado 2: Laranja (3 segundos)
+        apagarTodas();
+        luzLaranja.classList.add('ativo');
+        statusTexto.textContent = 'Sinal Laranja - 3s';
+
+        setTimeout(() => {
+          // Estado 3: Vermelho (6 segundos)
+          apagarTodas();
+          luzVermelho.classList.add('ativo');
+          statusTexto.textContent = 'Sinal Vermelho - 6s';
+
+          setTimeout(() => {
+            // Reinicia o ciclo
+            iniciarSemaforo();
+          }, 6000);
+
+        }, 3000);
+
+      }, 6000);
+    }
+
+    iniciarSemaforo();
+  </script>
+
+</body>
+</html>
